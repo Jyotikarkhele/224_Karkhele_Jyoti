@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digital Clock</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .clock {
+            font-size: 60px;
+            border: 5px solid #00FF00;
+            padding: 20px 40px;
+            border-radius: 15px;
+            background-color: #000000;
+            box-shadow: 0 0 20px #00FF00;
+        }
+    </style>
+</head>
+<body>
+
+<?php
+// Get current server time
+date_default_timezone_set('Asia/Kolkata'); // You can change timezone as needed
+$time = date("H:i:s");
+?>
+
+<div class="clock" id="clock"><?php echo $time; ?></div>
+
+<script>
+    // Start from server time
+    let serverTime = new Date();
+    let timeParts = "<?php echo $time; ?>".split(":");
+    serverTime.setHours(parseInt(timeParts[0]));
+    serverTime.setMinutes(parseInt(timeParts[1]));
+    serverTime.setSeconds(parseInt(timeParts[2]));
+
+    function updateClock() {
+        serverTime.setSeconds(serverTime.getSeconds() + 1);
+        let hours = serverTime.getHours().toString().padStart(2, '0');
+        let minutes = serverTime.getMinutes().toString().padStart(2, '0');
+        let seconds = serverTime.getSeconds().toString().padStart(2, '0');
+        document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
