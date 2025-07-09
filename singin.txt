@@ -1,0 +1,46 @@
+<?php
+session_start();
+
+// Hardcoded credentials
+$valid_username = "admin";
+$valid_password = "password123";
+
+// If already logged in
+if (isset($_SESSION['username'])) {
+    header("Location: welcome.php");
+    exit;
+}
+
+$error = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"] ?? '';
+    $password = $_POST["password"] ?? '';
+
+    if ($username === $valid_username && $password === $valid_password) {
+        $_SESSION["username"] = $username;
+        header("Location: welcome.php");
+        exit;
+    } else {
+        $error = "Invalid username or password!";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h2>Sign In</h2>
+    <?php if ($error): ?>
+        <p style="color:red;"><?php echo $error; ?></p>
+    <?php endif; ?>
+    <form method="post" action="">
+        Username: <input type="text" name="username" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
