@@ -1,0 +1,91 @@
+<?php
+// If it's an AJAX request, handle it and exit
+if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
+    if (isset($_GET['name']) && !empty($_GET['name'])) {
+        $name = htmlspecialchars($_GET['name']);
+        echo "Hello, $name! 👋 Welcome to our website.";
+    } else {
+        echo "Please enter a name.";
+    }
+    exit(); // Stop further output
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHP AJAX Example (Combined)</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            width: 250px;
+            margin-bottom: 15px;
+        }
+
+        #output {
+            font-size: 20px;
+            margin-top: 10px;
+            color: #ffffcc;
+        }
+    </style>
+
+    <script>
+        function sendRequest() {
+            var input = document.getElementById("name").value;
+
+            if (input == "") {
+                document.getElementById("output").innerHTML = "";
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("output").innerHTML = xhr.responseText;
+                }
+            };
+
+            // Send AJAX request to the same file (this file)
+            xhr.open("GET", "ajax_combined.php?ajax=1&name=" + encodeURIComponent(input), true);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>PHP AJAX</h2>
+        <label>Enter your name:</label><br>
+        <input type="text" id="name" onkeyup="sendRequest()" placeholder="Type your name...">
+        <p><strong>Response:</strong> <span id="output"></span></p>
+    </div>
+</body>
+</html>
