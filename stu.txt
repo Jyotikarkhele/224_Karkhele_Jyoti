@@ -1,0 +1,113 @@
+<?php
+// Backend AJAX logic
+if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
+    $students = [
+        ["id" => 1, "name" => "Shruti Maroti", "course" => "BCA"],
+        ["id" => 2, "name" => "Nageshwar Patil", "course" => "MCA"],
+        ["id" => 3, "name" => "Priya Sharma", "course" => "BSc IT"],
+        ["id" => 4, "name" => "Rahul Kumar", "course" => "MBA"],
+        ["id" => 5, "name" => "Sneha Joshi", "course" => "BTech"]
+    ];
+
+    $name = strtolower(trim($_GET['name'] ?? ''));
+    $found = false;
+
+    foreach ($students as $student) {
+        if (strpos(strtolower($student['name']), $name) !== false) {
+            echo "<div class='record'>";
+            echo "<strong>ID:</strong> {$student['id']}<br>";
+            echo "<strong>Name:</strong> {$student['name']}<br>";
+            echo "<strong>Course:</strong> {$student['course']}</div><hr>";
+            $found = true;
+        }
+    }
+
+    if (!$found) {
+        echo "<span style='color: #ffdddd;'>No matching student found.</span>";
+    }
+
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Search with AJAX (Single File)</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #2980b9, #6dd5fa);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 260px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .record {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            text-align: left;
+            color: #fffbe6;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+
+    <script>
+        function searchStudent() {
+            var name = document.getElementById("studentName").value;
+            if (name === "") {
+                document.getElementById("result").innerHTML = "";
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("result").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "student_search_combined.php?ajax=1&name=" + encodeURIComponent(name), true);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Search Student Records</h2>
+        <input type="text" id="studentName" onkeyup="searchStudent()" placeholder="Enter student name...">
+        <div id="result"></div>
+    </div>
+</body>
+</html>

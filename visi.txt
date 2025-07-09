@@ -1,0 +1,60 @@
+<?php
+// File to store visitor count
+$counterFile = "counter.txt";
+
+// Check if the counter file exists
+if (!file_exists($counterFile)) {
+    // Create the file and initialize count to 0
+    file_put_contents($counterFile, "0");
+}
+
+// Read the current count
+$count = (int)file_get_contents($counterFile);
+
+// Increment the count
+$count++;
+
+// Save the new count back to the file
+file_put_contents($counterFile, $count);
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visitor Counter</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5); /* Gradient background */
+            color: #333;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 36px;
+            color: #222;
+        }
+
+        .counter-box {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            display: inline-block;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="counter-box">
+        <h1>Welcome to Our Website!</h1>
+        <h2>Total Visitors: <?php echo $count; ?></h2>
+    </div>
+</body>
+</html>
