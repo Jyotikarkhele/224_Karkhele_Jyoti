@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+    <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
+    <p>You are now signed in.</p>
+    <a href="logout.php">Sign Out</a>
+</body>
+</html>
+<?php
+session_start();
+session_unset();
+session_destroy();
+header("Location: login.php");
+exit();
